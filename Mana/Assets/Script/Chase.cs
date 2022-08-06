@@ -58,7 +58,7 @@ public class Chase : MonoBehaviour
         {
             heading = enemy.Target.position - transform.position;
             direction = heading.normalized;
-            velocity = rb.velocity;
+            velocity = rb.velocity;  // velocity is being overrided here, rather than added
 
             if(hasRange)
             {
