@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 171062550964845549}
   - component: {fileID: 675160627}
   - component: {fileID: 675160625}
-  - component: {fileID: 675160626}
+  - component: {fileID: 1627162877452532980}
   m_Layer: 0
   m_Name: Mana
   m_TagString: Untagged
@@ -199,7 +199,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &675160626
+--- !u!114 &1627162877452532980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 171062550964845548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c07f57b47ebd15b47af520b0217c8d33, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d2b0233332b2aa48845504f548db6a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnCollectAnimationCurve:
@@ -218,4 +218,5 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   collectSound: {fileID: 8300000, guid: f71cb6c7c76382940999ce65f49599b9, type: 3}
-  playsAudio: 0
+  playsAudio: 1
+  value: 1

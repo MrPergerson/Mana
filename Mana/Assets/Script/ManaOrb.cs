@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ManaOrb : Ability
 {
 
@@ -9,10 +10,12 @@ public class ManaOrb : Ability
     SpriteRenderer spriteRenderer;
     List<Hitbox> orbs;
 
-    [SerializeField] float manaCost = 5;
+
     [SerializeField, Range(0, 1000)] float orbitSpeed = 500;
     [SerializeField, Range(.5f, 2f)] float DistanceFromPlayer = 1;
     [SerializeField, Range(1,3)] int count = 1;
+
+
 
     private void Awake()
     {
@@ -22,8 +25,8 @@ public class ManaOrb : Ability
         {
             AddOrb();
         }
-        
 
+        ManaCost = .5f;
         
     }
 
@@ -43,7 +46,7 @@ public class ManaOrb : Ability
     private void AddOrb()
     {
         var orb = new GameObject().AddComponent<Hitbox>();
-        orb.InitializeHitbox(10, 4, this.transform);
+        orb.InitializeHitbox(20, 4, this.transform);
 
         orb.transform.parent = this.transform;
         orb.gameObject.SetActive(false);

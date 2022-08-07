@@ -12,7 +12,7 @@ public class Collectable : MonoBehaviour
 
     [SerializeField] bool playsAudio;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (collectSound)
             playsAudio = true;
@@ -24,15 +24,21 @@ public class Collectable : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void Collect(GameObject collector)
     {
-        if(playsAudio)
+        if (playsAudio)
         {
             audioSource.clip = collectSound;
             audioSource.Play();
         }
 
-        Destroy(this.gameObject,.2f);
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Collect(collision.gameObject);
+        Destroy(this.gameObject, .2f);
     }
 
 }

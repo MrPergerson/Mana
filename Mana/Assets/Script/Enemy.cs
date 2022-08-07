@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Chase))]
 public class Enemy : Actor
 {
+    [SerializeField] private float heath = 100;
     [SerializeField] private int damage = 1;
     [SerializeField] private Transform _target;
     [SerializeField] private bool _isDisabled;
@@ -69,6 +70,11 @@ public class Enemy : Actor
 
     public void Damage(float damage, Vector2 knockback)
     {
+        heath -= damage;
+
+        if (heath <= 0)
+            Destroy(this.gameObject);
+
         IsDisabled = true;
         StartCoroutine(base.Flash(disabledTime));
         rb.AddForce(knockback, ForceMode2D.Impulse);
