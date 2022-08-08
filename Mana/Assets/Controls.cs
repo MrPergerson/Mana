@@ -44,6 +44,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""83766e78-34b9-44be-9bbf-5735e962acf5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CharacterMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""8b6af9a9-49a9-437d-bb7b-8ef1a3171a7d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +152,50 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""CastSpell"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29e806a4-8fe3-400f-9c61-7389fc78bc85"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d52d96b1-722b-4362-a9d2-71ad5f33a32b"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a0ea63b-4e1c-48c4-9c31-2371e91c6a6d"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""CharacterMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2941d27-1afa-4cc7-bbee-a47f58bd3933"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""CharacterMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -172,6 +234,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_CastSpell = m_Player.FindAction("CastSpell", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_CharacterMenu = m_Player.FindAction("CharacterMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -233,12 +297,16 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_CastSpell;
+    private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_CharacterMenu;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
         public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @CastSpell => m_Wrapper.m_Player_CastSpell;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @CharacterMenu => m_Wrapper.m_Player_CharacterMenu;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -254,6 +322,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CastSpell.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastSpell;
                 @CastSpell.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastSpell;
                 @CastSpell.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCastSpell;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @CharacterMenu.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharacterMenu;
+                @CharacterMenu.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCharacterMenu;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -264,6 +338,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @CastSpell.started += instance.OnCastSpell;
                 @CastSpell.performed += instance.OnCastSpell;
                 @CastSpell.canceled += instance.OnCastSpell;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @CharacterMenu.started += instance.OnCharacterMenu;
+                @CharacterMenu.performed += instance.OnCharacterMenu;
+                @CharacterMenu.canceled += instance.OnCharacterMenu;
             }
         }
     }
@@ -290,5 +370,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnCastSpell(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnCharacterMenu(InputAction.CallbackContext context);
     }
 }

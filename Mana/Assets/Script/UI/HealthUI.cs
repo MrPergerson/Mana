@@ -13,10 +13,14 @@ public class HealthUI : MonoBehaviour
 
         if (heathCount == null)
             Debug.LogError("heathCount not found");
+
+        UpdateHealthText();
+
+        CharacterStats.onHealthChange += UpdateHealthText;
     }
 
-    public void UpdateHealthText(float value)
+    public void UpdateHealthText()
     {
-        heathCount.text = value.ToString();
+        heathCount.text = CharacterStats.Health.ToString();
     }
 }

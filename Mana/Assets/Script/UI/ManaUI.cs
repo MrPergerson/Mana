@@ -13,10 +13,14 @@ public class ManaUI : MonoBehaviour
 
         if (manaCount == null)
             Debug.LogError("heathCount not found");
+
+        UpdateManaText();
+
+        CharacterStats.onManaChange += UpdateManaText;
     }
-    public void UpdateManaText(float value)
+    public void UpdateManaText()
     {
-        var count = (float)Math.Round(value, 2);
+        var count = (float)Math.Round(CharacterStats.Mana, 2);
         manaCount.text = count.ToString();
     }
 

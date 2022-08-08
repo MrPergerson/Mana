@@ -9,8 +9,8 @@ public class Player : Actor
     Controls controls;
 
     SimpleMove move;
-    [SerializeField] float mana = 0;
-    [SerializeField] int heath = 5;
+    [SerializeField] float _mana = 0;
+    [SerializeField] int _heath = 0;
     [SerializeField] bool _isInvicible;
 
     [SerializeField] Ability currentAbility;
@@ -19,10 +19,13 @@ public class Player : Actor
     private float timeSinceInvicible = 0;
 
     public UnityEvent onDeath;
-    public UnityEvent<float> onHeathChange;
-    public UnityEvent<float> onManaChange;
 
     protected bool isCasting = false;
+
+    private bool characterMenuOpened = false;
+    [SerializeField] GameObject characterMenu;
+
+    private bool gamePaused = false;
 
     public bool IsInvicible
     {
@@ -38,15 +41,10 @@ public class Player : Actor
 
         controls.Player.CastSpell.performed += ctx => { currentAbility.Cast(); isCasting = true;};
         controls.Player.CastSpell.canceled += ctx => { currentAbility.Stop(); isCasting = false; };
+        controls.Player.CharacterMenu.performed += ctx => ToggleCharacterMenu();
 
         if (onDeath == null)
             onDeath = new UnityEvent();
-    }
-
-    protected override void Start()
-    {
-        onHeathChange.Invoke(heath);
-        onManaChange.Invoke(mana);
     }
 
     private void OnEnable()
@@ -72,9 +70,11 @@ public class Player : Actor
 
         if (isCasting)
         {
-            mana -= (currentAbility.ManaCost * Time.deltaTime);
-            onManaChange.Invoke(mana);
+            CharacterStats.Mana -= (currentAbility.ManaCost * Time.deltaTime);
         }
+
+        _heath = CharacterStats.Health;
+        _mana = CharacterStats.Mana;
     }
 
     public void Damage(float damage)
@@ -82,19 +82,48 @@ public class Player : Actor
         if(IsInvicible == false)
         {
             StartCoroutine(base.Flash(invicibleTime));
-            heath -= 1;
-            onHeathChange.Invoke(heath);
+            CharacterStats.Health -= 1;
             IsInvicible = true;
             timeSinceInvicible = Time.time;
 
-            if (heath <= 0)
+            if (CharacterStats.Health <= 0)
                 onDeath.Invoke();
         }
     }
 
     public void CollectMana(float count)
     {
-        mana += count;
-        onManaChange.Invoke(mana);
+        CharacterStats.Mana += count;
+    }
+
+    private void ToggleCharacterMenu()
+    {
+        characterMenuOpened = !characterMenuOpened;
+        
+        
+        if(characterMenu)
+        {
+            if(characterMenuOpened)
+            {
+                characterMenu.SetActive(true);
+                PauseGame();
+            }
+            else
+            {
+                characterMenu.SetActive(false);
+                ResumeGame();
+            }
+
+        }
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }
